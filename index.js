@@ -9,14 +9,23 @@ app.get('/',function(req,res){
 })
 
 io.on('connection',function(socket){
-	console.log("a user connected");
+	console.log("a user "+socket.id+" connected");
 	socket.on("disconnect",function(){
-		console.log("user disconnected");
+		console.log("user "+socket.id+" disconnected");
 	});
 	socket.on('chat message',function(msg){
 		io.emit('chat message',msg);
 	});
+	socket.on("message",function(msg){
+		io.emit("message",msg);
+	});
 });
+
+// io.on("message",function(socket){
+// 	socket.on("message",function(msg){
+// 		io.emit("message",msg);
+// 	});
+// });
 
 
 
@@ -26,5 +35,5 @@ app.set("view engine","jade");
 app.use(express.static(path.join( path.dirname(process.argv[1]),"static") ));
 
 http.listen(3000,function(){
-	console.log("listen on *:3000");
+	console.log("listen on 3000");
 });
